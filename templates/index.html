@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Phishing Link Detection System</title>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <style>
+                body {
+        font-family: "Segoe UI", Arial, sans-serif;
+        background:
+            linear-gradient(rgba(2,6,23,0.85), rgba(2,6,23,0.85)),
+            url("{{ url_for('static', filename='bg.jpg') }}");
+        background-size: cover;
+        background-position: center;
+        background-attachment: fixed;
+        color: #e5e7eb;
+        margin: 0;
+        padding: 0;
+    }
+
+        .container {
+            max-width: 650px;
+            margin: 80px auto;
+            padding: 30px;
+            background-color: #020617;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0,0,0,0.6);
+        }
+
+        h1 {
+            text-align: center;
+            color: #38bdf8;
+            margin-bottom: 10px;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #9ca3af;
+            margin-bottom: 30px;
+            font-size: 14px;
+        }
+
+        form {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 25px;
+        }
+
+        input[type="text"] {
+            flex: 1;
+            padding: 12px;
+            border-radius: 6px;
+            border: none;
+            font-size: 15px;
+            outline: none;
+        }
+
+        button {
+            padding: 12px 18px;
+            background-color: #38bdf8;
+            border: none;
+            border-radius: 6px;
+            font-size: 15px;
+            cursor: pointer;
+            color: #020617;
+            font-weight: bold;
+        }
+
+        button:hover {
+            background-color: #0ea5e9;
+        }
+
+        .result-box {
+            margin-top: 25px;
+            padding: 20px;
+            border-radius: 8px;
+            background-color: #020617;
+            border: 1px solid #1e293b;
+        }
+
+        .result-box p {
+            margin: 8px 0;
+        }
+
+        .risk {
+            font-weight: bold;
+            font-size: 16px;
+        }
+
+        .verdict {
+            margin-top: 10px;
+            font-size: 18px;
+            font-weight: bold;
+        }
+
+        .reasons {
+            margin-top: 15px;
+        }
+
+        .reasons ul {
+            margin-top: 8px;
+            padding-left: 20px;
+        }
+
+        .footer {
+            margin-top: 30px;
+            text-align: center;
+            font-size: 12px;
+            color: #64748b;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="container">
+    <h1>🔐 Phishing Link Detection</h1>
+    <div class="subtitle">
+        Heuristic + Threat Intelligence Based URL Analysis
+    </div>
+
+    <form method="POST">
+        <input type="text" name="url" placeholder="Enter URL to analyze (e.g. https://example.com)" required>
+        <button type="submit">Analyze</button>
+    </form>
+
+    {% if result %}
+    <div class="result-box">
+        <p><strong>Analyzed URL:</strong> {{ result.url }}</p>
+        <p class="risk"><strong>Risk Score:</strong> {{ result.risk }}%</p>
+
+        <div class="verdict">
+            {{ result.verdict }}
+        </div>
+
+        {% if result.reasons %}
+        <div class="reasons">
+            <strong>Detection Reasons:</strong>
+            <ul>
+                {% for reason in result.reasons %}
+                <li>{{ reason }}</li>
+                {% endfor %}
+            </ul>
+        </div>
+        {% endif %}
+    </div>
+    {% endif %}
+
+    <div class="footer">
+        This result is based on heuristic analysis and threat-intelligence data.
+        No system guarantees 100% accuracy.
+    </div>
+</div>
+
+</body>
+</html>
